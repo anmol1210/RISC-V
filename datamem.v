@@ -1,9 +1,6 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Module Name: data_memory
-// Description: Byte-addressable RISC-V data memory (256 bytes = 64 words)
-//
-//  Writes  – synchronous (posedge clk), controlled by store signals:
+//comments to make understanding easy :
+  // Writes  – synchronous (posedge clk), controlled by store signals:
 //    sb_control  → write 1 byte  (wr_data[7:0]  → mem[wr_addr])
 //    sh_control  → write 2 bytes (wr_data[15:0] → mem[wr_addr+1:wr_addr])
 //    sw_control  → write 4 bytes (wr_data[31:0] → mem[wr_addr+3:wr_addr])
@@ -14,7 +11,6 @@
 //
 //  Address – 8-bit (byte address), supporting 256 bytes of storage.
 //    The ALU computes the effective byte address and drives both wr_addr / rd_addr.
-//////////////////////////////////////////////////////////////////////////////////
 
 module data_memory (
     input         clk,
@@ -35,10 +31,7 @@ module data_memory (
     // 256 byte-wide locations
     reg [7:0] data_mem [0:255];
     integer i;
-
-    //--------------------------------------------------------------------------
     // Synchronous write
-    //--------------------------------------------------------------------------
     always @(posedge clk) begin
         if (rst) begin
             for (i = 0; i < 256; i = i + 1)
@@ -63,12 +56,9 @@ module data_memory (
             end
         end
     end
-
-    //--------------------------------------------------------------------------
     // Asynchronous read – always assembles a full 32-bit word (little-endian)
     // The register file/mem_to_reg path selects the correct byte(s) and applies
     // sign or zero extension based on lb/lh/lw/lbu/lhu control signals.
-    //--------------------------------------------------------------------------
     assign data_out = {
         data_mem[rd_addr + 3],
         data_mem[rd_addr + 2],
