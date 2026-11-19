@@ -1,7 +1,4 @@
 `timescale 1ns / 1ps
-
-
-
 module data_path(
     input clk,
     input rst,
@@ -23,14 +20,7 @@ module data_path(
     output  beq,bneq,bge,blt //these signals are going to ifu
     );
     
-    
-    
-    
-    
-    
-    
-    
-    wire [31:0] read_data1;
+     wire [31:0] read_data1;
     
     wire [31:0] read_data2;
     
@@ -38,30 +28,18 @@ module data_path(
     
     wire [31:0] write_data_alu;
     
-    
-    
-    wire [31:0] data_out;
+     wire [31:0] data_out;
     
     wire [31:0]  data_out_2_dm;
     
     
-    
-    
-    
-
     register_file rfu (clk,rst,read_reg_num1,read_reg_num2,write_reg_num1,data_out,lb,lui_control,imm_val_lui,jump,read_data1,read_data2,read_data_addr_dm_2,data_out_2_dm,sw);
     
     alu alu_unit(read_data1,read_data2,alu_control,imm_val,shamt,write_data_alu);
     
     data_memory dmu(clk,rst,imm_val[4:0],data_out_2_dm,sw,imm_val[4:0],data_out);
    
-   
      assign read_data_addr_dm = read_data_addr_dm_2;
-     
-
-        
-    
-
      
      assign beq = (write_data_alu == 1 && beq_control == 1) ? 1 : 0;
      
@@ -70,20 +48,5 @@ module data_path(
      assign bge = (write_data_alu == 1 && bgeq_control == 1) ? 1 : 0 ;
      
      assign blt = (write_data_alu == 1 && blt_control == 1) ? 1 : 0;
-     
-     
-
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-         
+          
 endmodule
