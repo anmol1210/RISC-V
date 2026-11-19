@@ -6,7 +6,7 @@ module instruction_fetch_unit (
 
     // Branch/jump immediate offset (from imm_gen, via top)
     input  [31:0] imm_val_branch,    // B-type offset
-    input  [31:0] imm_val_jump,      // J-type offset (JAL)
+    input  [31:0] imm_val_jump,      // J-type offset(JAL)
 
     // JALR target computed by ALU: (rs1 + imm) with LSB cleared
     input  [31:0] jalr_target,
