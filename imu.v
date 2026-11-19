@@ -1,12 +1,10 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
 // Module Name: instruction_memory
 // Description: RISC-V Instruction Memory (ROM)
 //   - Byte-addressable, little-endian
 //   - 152 bytes (covers all test instructions up to address 147 + 3-byte margin)
 //   - Synchronous load on reset; asynchronous read
 //   - PC indexes the byte address; 4 bytes assembled into a 32-bit word
-//////////////////////////////////////////////////////////////////////////////////
 
 module instruction_memory (
     input         clk,
@@ -29,10 +27,8 @@ module instruction_memory (
             // Zero-initialise all locations first to avoid X on unused addresses
             for (i = 0; i < 152; i = i + 1)
                 memory[i] <= 8'h00;
-
-            // ----------------------------------------------------------------
+            
             // R-TYPE INSTRUCTIONS
-            // ----------------------------------------------------------------
             // ADD  x5, x6, x7  → 0x007302b3
             memory[3]  <= 8'h00; memory[2]  <= 8'h73; memory[1]  <= 8'h02; memory[0]  <= 8'hb3;
             // SUB  x8, x9, x8  → 0x40848433
@@ -54,9 +50,7 @@ module instruction_memory (
             // AND  x1, x2, x3  → 0x003170b3
             memory[39] <= 8'h00; memory[38] <= 8'h31; memory[37] <= 8'h70; memory[36] <= 8'hb3;
 
-            // ----------------------------------------------------------------
             // I-TYPE: ALU IMMEDIATE
-            // ----------------------------------------------------------------
             // ADDI  x5, x6, 15  → 0x00f30293
             memory[43] <= 8'h00; memory[42] <= 8'hf3; memory[41] <= 8'h02; memory[40] <= 8'h93;
             // SLTI  x7, x8, 20  → 0x01442393
@@ -70,9 +64,7 @@ module instruction_memory (
             // ANDI  x15,x16,40  → 0x02887793
             memory[63] <= 8'h02; memory[62] <= 8'h88; memory[61] <= 8'h77; memory[60] <= 8'h93;
 
-            // ----------------------------------------------------------------
             // I-TYPE: SHIFT IMMEDIATE
-            // ----------------------------------------------------------------
             // SLLI  x5, x6, 2   → 0x00231293
             memory[67] <= 8'h00; memory[66] <= 8'h23; memory[65] <= 8'h12; memory[64] <= 8'h93;
             // SRLI  x7, x8, 3   → 0x00345393
@@ -80,9 +72,7 @@ module instruction_memory (
             // SRAI  x9, x10,1   → 0x40155493
             memory[75] <= 8'h40; memory[74] <= 8'h15; memory[73] <= 8'h54; memory[72] <= 8'h93;
 
-            // ----------------------------------------------------------------
             // I-TYPE: LOAD
-            // ----------------------------------------------------------------
             // LB    x5, 0(x6)   → 0x00030283
             memory[79] <= 8'h00; memory[78] <= 8'h03; memory[77] <= 8'h02; memory[76] <= 8'h83;
             // LH    x7, 4(x8)   → 0x00441383
@@ -94,15 +84,11 @@ module instruction_memory (
             // LHU   x13,16(x14) → 0x01075683
             memory[95] <= 8'h01; memory[94] <= 8'h07; memory[93] <= 8'h56; memory[92] <= 8'h83;
 
-            // ----------------------------------------------------------------
             // I-TYPE: JALR
-            // ----------------------------------------------------------------
             // JALR  x1, 0(x5)   → 0x000280e7
             memory[99]  <= 8'h00; memory[98]  <= 8'h02; memory[97]  <= 8'h80; memory[96]  <= 8'he7;
 
-            // ----------------------------------------------------------------
             // S-TYPE: STORE
-            // ----------------------------------------------------------------
             // SB    x5, 0(x6)   → 0x00530023
             memory[103] <= 8'h00; memory[102] <= 8'h53; memory[101] <= 8'h00; memory[100] <= 8'h23;
             // SH    x7, 4(x8)   → 0x00741223
@@ -110,9 +96,7 @@ module instruction_memory (
             // SW    x9, 8(x10)  → 0x00952423
             memory[111] <= 8'h00; memory[110] <= 8'h95; memory[109] <= 8'h24; memory[108] <= 8'h23;
 
-            // ----------------------------------------------------------------
             // B-TYPE: BRANCH
-            // ----------------------------------------------------------------
             // BEQ   x5, x6, 8   → 0x00629463
             memory[115] <= 8'h00; memory[114] <= 8'h62; memory[113] <= 8'h94; memory[112] <= 8'h63;
             // BNE   x7, x8, 8   → 0x00838463  (was labelled bneq)
@@ -126,21 +110,17 @@ module instruction_memory (
             // BGEU  x15,x16,8   → 0x0107f463
             memory[135] <= 8'h01; memory[134] <= 8'h07; memory[133] <= 8'hf4; memory[132] <= 8'h63;
 
-            // ----------------------------------------------------------------
             // U-TYPE
-            // ----------------------------------------------------------------
             // LUI   x5, 0x12345 → 0x123452b7
             memory[139] <= 8'h12; memory[138] <= 8'h34; memory[137] <= 8'h52; memory[136] <= 8'hb7;
             // AUIPC x6, 0x54321 → 0x54321317
             memory[143] <= 8'h54; memory[142] <= 8'h32; memory[141] <= 8'h13; memory[140] <= 8'h17;
 
-            // ----------------------------------------------------------------
             // J-TYPE
-            // ----------------------------------------------------------------
             // JAL   x1, 64      → 0x040000ef
             memory[147] <= 8'h04; memory[146] <= 8'h00; memory[145] <= 8'h00; memory[144] <= 8'hef;
 
-        end // reset
-    end // always
+        end 
+    end 
 
 endmodule
