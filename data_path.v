@@ -8,7 +8,7 @@ module data_path(
     input [5:0] alu_control,
     input jump,beq_control,bne_control,
     input [31:0] imm_val,
-    input [3:0] shamt,  //havent discussed yet 
+    input [3:0] shamt, 
     input lb,
     input sw,
     input bgeq_control,
