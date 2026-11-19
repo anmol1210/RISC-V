@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-//Although i have mentioned the operation names against the opcodes, here is a table for the reader's ease  :
+//Although i have mentioned the operation names against the opcodes, here is a table for the reader's ease :
 // alu_control | Instruction
 // 6'b000001   ADD   (R)
 // 6'b000010  SUB   (R)
