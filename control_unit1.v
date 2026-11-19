@@ -11,7 +11,7 @@ module control_unit1(
     output reg lbu_control,         // load byte unsigned
     output reg lhu_control,         // load half unsigned
 
-    output reg mem_to_reg,          // data flow from memory to register
+    output reg mem_to_reg,          //data flow from memory to register
 
     output reg bneq_control,
     output reg beq_control,
