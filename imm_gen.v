@@ -1,10 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Module Name: imm_gen
-// Description: RISC-V Immediate Generator
-//              Extracts and sign-extends the immediate value from a 32-bit
-//              instruction based on its opcode (instruction format).
-//
 // Supported formats and opcodes:
 //   R-type  : 7'b0110011  – no immediate (output 0)
 //   I-type  : 7'b0010011  – ALU immediate
@@ -15,7 +9,6 @@
 //   U-type  : 7'b0110111  – LUI
 //   U-type  : 7'b0010111  – AUIPC
 //   J-type  : 7'b1101111  – JAL
-//////////////////////////////////////////////////////////////////////////////////
 
 module imm_gen (
     input  [31:0] instr_memory,   // full 32-bit instruction
