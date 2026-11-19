@@ -50,10 +50,7 @@ module control_unit1(
         end else begin
 
             case (opcode)
-
-                //------------------------------------------------------------
                 // R-TYPE INSTRUCTIONS  (opcode = 0110011)
-                //------------------------------------------------------------
                 7'b0110011: begin
                     case (funct3)
                         3'b000: begin
@@ -73,10 +70,7 @@ module control_unit1(
                         default: alu_control = 6'b000000;
                     endcase
                 end
-
-                //------------------------------------------------------------
                 // I-TYPE ALU INSTRUCTIONS  (opcode = 0010011)
-                //------------------------------------------------------------
                 7'b0010011: begin
                     case (funct3)
                         3'b000: alu_control = 6'b001011;                             // ADDI
@@ -93,10 +87,8 @@ module control_unit1(
                         default: alu_control = 6'b000000;
                     endcase
                 end
-
-                //------------------------------------------------------------
+                
                 // I-TYPE LOAD INSTRUCTIONS  (opcode = 0000011)
-                //------------------------------------------------------------
                 7'b0000011: begin
                     case (funct3)
                         3'b000: begin alu_control = 6'b010100; lb_control  = 1; mem_to_reg = 1; end // LB
@@ -107,10 +99,7 @@ module control_unit1(
                         default: alu_control = 6'b000000;
                     endcase
                 end
-
-                //------------------------------------------------------------
                 // S-TYPE STORE INSTRUCTIONS  (opcode = 0100011)
-                //------------------------------------------------------------
                 7'b0100011: begin
                     case (funct3)
                         3'b000: begin alu_control = 6'b011001; sb_control = 1; end  // SB
@@ -119,10 +108,7 @@ module control_unit1(
                         default: alu_control = 6'b000000;
                     endcase
                 end
-
-                //------------------------------------------------------------
                 // B-TYPE BRANCH INSTRUCTIONS  (opcode = 1100011)
-                //------------------------------------------------------------
                 7'b1100011: begin
                     case (funct3)
                         3'b000: begin alu_control = 6'b011100; beq_control  = 1; end // BEQ
@@ -134,34 +120,22 @@ module control_unit1(
                         default: alu_control = 6'b000000;
                     endcase
                 end
-
-                //------------------------------------------------------------
                 // U-TYPE: LUI  (opcode = 0110111)
-                //------------------------------------------------------------
                 7'b0110111: begin
                     alu_control = 6'b100010;
                     lui_control = 1;
                 end
-
-                //------------------------------------------------------------
                 // U-TYPE: AUIPC  (opcode = 0010111)
-                //------------------------------------------------------------
                 7'b0010111: begin
                     alu_control   = 6'b100100;
                     auipc_control = 1;
                 end
-
-                //------------------------------------------------------------
                 // J-TYPE: JAL  (opcode = 1101111)
-                //------------------------------------------------------------
                 7'b1101111: begin
                     alu_control = 6'b100011;
                     jal_control = 1;
                 end
-
-                //------------------------------------------------------------
                 // I-TYPE: JALR  (opcode = 1100111)
-                //------------------------------------------------------------
                 7'b1100111: begin
                     if (funct3 == 3'b000) begin
                         alu_control  = 6'b100101;
