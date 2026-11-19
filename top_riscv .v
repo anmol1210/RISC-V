@@ -1,8 +1,5 @@
 `timescale 1ns / 1ps
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Engineer    : TADAKAMALLA GOURAV
-// Module Name : top_riscv
-// Description : Top-level RISC-V processor.
+// Top-level RISC-V processor.
 //               Connects all six submodules:
 //                 1. instruction_fetch_unit  (IFU)
 //                 2. instruction_memory      (IMU)
@@ -16,7 +13,6 @@
 //   instruction_out → CU       → all control signals
 //   instruction_out[rs1/rs2/rd] + control + imm_val → data_path → branch signals + jalr_target
 //   branch signals + jalr_target → IFU → next PC
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module top_riscv (
     input clk,
@@ -26,22 +22,15 @@ module top_riscv (
 	output [31:0] imm_out,
 	output beq_out
 );
-
-    // -------------------------------------------------------------------------
     // Programme Counter & instruction bus
-    // -------------------------------------------------------------------------
     wire [31:0] pc;
     wire [31:0] current_pc;          // PC+4 return address (available if needed)
     wire [31:0] instruction_out;     // 32-bit instruction word
 
-    // -------------------------------------------------------------------------
     // Immediate value (single bus – imm_gen selects correct format by opcode)
-    // -------------------------------------------------------------------------
-    wire [31:0] imm_val;
 
-    // -------------------------------------------------------------------------
-    // Control unit outputs
-    // -------------------------------------------------------------------------
+    wire [31:0] imm_val;
+// Control unit outputs
     wire [5:0]  alu_control;
     wire        reg_write;
     wire        mem_to_reg;
@@ -68,9 +57,8 @@ module top_riscv (
     wire        jal_control;
     wire        jalr_control;
 
-    // -------------------------------------------------------------------------
     // Datapath → IFU: branch taken flags and JALR target
-    // -------------------------------------------------------------------------
+
     wire        beq;
     wire        bne;
     wire        blt;
@@ -79,9 +67,7 @@ module top_riscv (
     wire        bgeu;
     wire [31:0] jalr_target;        // ALU result for JALR: (rs1+imm) with LSB=0
 
-    // =========================================================================
     // 1. INSTRUCTION FETCH UNIT
-    // =========================================================================
     instruction_fetch_unit ifu (
         .clk            (clk),
         .reset          (reset),
@@ -105,9 +91,7 @@ module top_riscv (
         .current_pc     (current_pc)
     );
 
-    // =========================================================================
     // 2. INSTRUCTION MEMORY
-    // =========================================================================
     instruction_memory imu (
         .clk             (clk),
         .reset           (reset),
@@ -115,20 +99,15 @@ module top_riscv (
         .instruction_out (instruction_out)
     );
 
-    // =========================================================================
     // 3. IMMEDIATE GENERATOR
     //    Decodes instruction format from opcode and sign-extends the immediate.
     //    One output covers all formats: I, S, B, U, J.
-    // =========================================================================
     imm_gen imm_generator (
         .instr_memory (instruction_out),
         .imm_val_r    (imm_val)
     );
-
-    // =========================================================================
     // 4. CONTROL UNIT
     //    Inputs: funct7[31:25], funct3[14:12], opcode[6:0]
-    // =========================================================================
     control_unit1 cu (
         .reset         (reset),
         .funct7        (instruction_out[31:25]),
@@ -161,8 +140,6 @@ module top_riscv (
         .jal_control   (jal_control),
         .jalr_control  (jalr_control)
     );
-
-    // =========================================================================
     // 5. DATA PATH
     //    Contains: register_file, alu, data_memory
     //
@@ -171,7 +148,6 @@ module top_riscv (
     //      rs2  = instruction_out[24:20]
     //      rd   = instruction_out[11:7]
     //      shamt= instruction_out[24:20]  (same field as rs2 for shift immediates)
-    // =========================================================================
     data_path dpu (
         .clk            (clk),
         .rst            (reset),
